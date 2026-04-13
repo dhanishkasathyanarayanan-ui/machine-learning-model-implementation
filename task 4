@@ -1,0 +1,23 @@
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+# Data
+X = ["Free money", "Hi friend", "Win prize now", "Hello", "Claim reward"]
+y = [1, 0, 1, 0, 1]  # 1=Spam, 0=Ham
+
+# Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+# Vectorize
+vec = CountVectorizer()
+X_train = vec.fit_transform(X_train)
+X_test = vec.transform(X_test)
+
+# Model
+model = MultinomialNB()
+model.fit(X_train, y_train)
+
+# Test
+msg = ["You won a free prize"]
+print("Spam" if model.predict(vec.transform(msg))[0] else "Ham")
